@@ -1,0 +1,32 @@
+.log-in{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 200px;
+}
+.bottom-section{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: 85px;
+}
+.log-in-label{
+    font-size: 40px;
+}
+
+.name-input{
+    border: 2px solid black;
+    height: 35px;
+    padding-left: 10px;
+}
+
+.log-in-btn{
+    border: 2px solid black;
+    width: 80px;
+    height: 35px;
+    border-radius: 999px;
+}
+
+.log-in-btn:hover{
+    background-color: #bbbbbb;
+}

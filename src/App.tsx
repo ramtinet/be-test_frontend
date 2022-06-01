@@ -7,11 +7,11 @@ import LogIn from "./views/LogIn.view";
 import Home from "./views/Home.view";
 
 const App = () => {
-
   const [username, setUsername] = useState<string>("");
   const [emails, setEmails] = useState<Mail[]>([]);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [recipient, setRecipient] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
   const socket : Socket = getSocket(io);
 
   useEffect(() => {
@@ -21,10 +21,8 @@ const App = () => {
   })
 
   const login = () => {
-    socket?.emit('LOGIN', {name: username}, (err : any)=>{
-      console.error(err.error);
-    });
-    socket?.on('LOGIN', (response) => {
+    socket.emit('LOGIN', {name: username});
+    socket.on('LOGIN', (response) => {
       const {requestFailed} = response;
       if(!requestFailed){
         setLoggedIn(true);
@@ -34,18 +32,17 @@ const App = () => {
   }
   const getAllMail = async () => {
     const response: Mail[] = await getMail(username);
-    console.log(response);
     setEmails(response);
   }
   const sendEmail = async () => {
-    const mail: Mail = createMail(recipient, "hello");
+    const mail: Mail = createMail(recipient, message);
     sendMail(mail);
   }
 
   return (
     <div className="app">
       {(loggedIn) ?
-          <Home username={username} emails={emails} recipient={recipient} setRecipient={setRecipient} sendEmail={sendEmail} />
+          <Home username={username} emails={emails} recipient={recipient} message={message} setRecipient={setRecipient} sendEmail={sendEmail} setMessage={setMessage} />
           : <LogIn login={login} setUsername={setUsername} username={username}/>}
     </div>
   );
