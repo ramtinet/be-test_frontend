@@ -8,6 +8,7 @@ import Home from "./views/Home.view";
 
 const App = () => {
   const [username, setUsername] = useState<string>("");
+  const [invalidUsername, setInvalidUsername] = useState<boolean>(false);
   const [emails, setEmails] = useState<Mail[]>([]);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [recipient, setRecipient] = useState<string>("");
@@ -21,13 +22,14 @@ const App = () => {
   })
 
   const login = () => {
-    socket.emit('LOGIN', {name: username});
-    socket.on('LOGIN', (response) => {
-      const {requestFailed} = response;
-      if(!requestFailed){
+    socket.emit('LOGIN', {name: username}, (error: any)=> {
+      console.log(error.errorMessage);
+      console.error(error.errorObject);
+      setInvalidUsername(true);
+    });
+    socket.on('LOGIN', () => {
         setLoggedIn(true);
         getAllMail();
-      }
     })
   }
   const getAllMail = async () => {
@@ -43,7 +45,7 @@ const App = () => {
     <div className="app">
       {(loggedIn) ?
           <Home username={username} emails={emails} recipient={recipient} message={message} setRecipient={setRecipient} sendEmail={sendEmail} setMessage={setMessage} />
-          : <LogIn login={login} setUsername={setUsername} username={username}/>}
+          : <LogIn login={login} invalidUsername={invalidUsername} setUsername={setUsername} username={username}/>}
     </div>
   );
 }

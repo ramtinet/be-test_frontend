@@ -20,6 +20,10 @@
     padding-left: 10px;
 }
 
+.invalid-input{
+    background-color: #f1b2b2;
+}
+
 .log-in-btn{
     border: 2px solid black;
     width: 80px;
